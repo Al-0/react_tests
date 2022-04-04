@@ -1,0 +1,14 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0;
+  background: rgba(0, 0, 0, 0.896);
+  display: flex;
+  justify-content: center;
+}
