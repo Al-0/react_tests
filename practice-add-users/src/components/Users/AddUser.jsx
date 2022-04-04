@@ -12,7 +12,7 @@ export default function AddUser(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (age === "" || username === "") {
+    if (age.trim() === "" || username.trim() === "") {
       setErrorMessage("You must provide a valid username and age");
     } else if (age < 0 || age > 100) {
       setErrorMessage("Age can only be in the 0 to 100 range.");
@@ -43,7 +43,7 @@ export default function AddUser(props) {
   return (
     <div>
       {errorMessage !== '' &&
-        <Modal message={errorMessage} reset={resetModal}/>
+        <Modal message={errorMessage} reset={resetModal} title='Invalid input'/>
       }
       <Card>
         <form onSubmit={handleSubmit}>
