@@ -1,7 +1,6 @@
 import React from "react";
 import * as ReactDOM from "react-dom";
 import Button from "../shared/Button/Button";
-import { Card } from "../shared/Card/Card";
 import styles from "./Modal.module.css";
 
 const Backdrop = (props) => {
