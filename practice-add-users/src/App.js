@@ -12,10 +12,10 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       <AddUser handleUsersChange={usersHandler}/>
       <UserList users={users}/>
-    </div>
+    </>
   );
 }
 
