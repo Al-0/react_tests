@@ -6,34 +6,53 @@ import { MealItem } from "./MealItem/MealItem";
 export const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [httpError, setHttpError] = useState();
 
   useEffect(() => {
     const fetchMeals = async () => {
       setIsLoading(true);
-      const response = await fetch('https://react-http-55272-default-rtdb.firebaseio.com/meals.json');
+      const response = await fetch(
+        "https://react-http-55272-default-rtdb.firebaseio.com/meals.json"
+      );
+
+      if (!response.ok) {
+        throw new Error("Opps! Something went wrong :C");
+      }
+
       const responseData = await response.json();
 
       const loadedMeals = [];
-      for (const key in responseData){
+      for (const key in responseData) {
         loadedMeals.push({
           id: key,
-          ...responseData[key]
-        })
+          ...responseData[key],
+        });
       }
 
       setIsLoading(false);
-      setMeals(loadedMeals)
-    }
+      setMeals(loadedMeals);
+    };
 
-    fetchMeals();
-  }, [])
+    fetchMeals().catch((err) => {
+      setIsLoading(false);
+      setHttpError(err.message);
+    });
+  }, []);
 
   if (isLoading) {
     return (
       <section className={classes.MealsLoading}>
         <p>Loading...</p>
       </section>
-    )
+    );
+  }
+
+  if (httpError) {
+    return (
+      <section className={classes.MealsError}>
+        <p>{httpError}</p>
+      </section>
+    );
   }
 
   // eslint-disable-next-line array-callback-return
