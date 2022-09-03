@@ -1,7 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Products = () => {
+  // const navigate = useNavigate();
+  // navigate(1); //Go one page forward
+  // navigate(-1); //Go one page back
+  // navigate('/welcome'); // Equivalent to push
+  // navigate('/welcome', {replace: true}); // Equivalent to replace
+  
   return (
     <section>
       <h1>Products page</h1>
