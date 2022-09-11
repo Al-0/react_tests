@@ -74,3 +74,5 @@ export const QuoteDetail = () => {
     </>
   );
 };
+
+export default QuoteDetail;

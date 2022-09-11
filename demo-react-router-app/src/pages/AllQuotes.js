@@ -44,3 +44,5 @@ export const AllQuotes = () => {
 
   return <QuoteList quotes={loadedQuotes}/>;
 };
+
+export default AllQuotes;
