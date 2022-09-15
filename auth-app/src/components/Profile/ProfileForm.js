@@ -22,7 +22,9 @@ const ProfileForm = () => {
       headers: {
         'Content-Type': 'application/json'
       }
-    }).catch({})
+    }).then(res => {
+      // error validation required
+    })
   }
 
   return (
