@@ -1,47 +1,66 @@
 import React from "react";
+import { MongoClient } from "mongodb";
 import { MeetupDetail } from "../components/meetups/MeetupDetail";
 
-export default function MeetUpDetails() {
+export default function MeetUpDetails({ meetupData }) {
   return (
     <MeetupDetail
-      image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/K%C3%B6lner_Dom_nachts_2013.jpg/1920px-K%C3%B6lner_Dom_nachts_2013.jpg"
-      title="A meetup"
-      address="Test street, 1234, New Zealand"
-      description="A meetup description"
+      image={meetupData.image}
+      title={meetupData.title}
+      address={meetupData.address}
+      description={meetupData.description}
     />
   );
 }
 
 export async function getStaticPaths() {
+  const client = await MongoClient.connect(
+    `mongodb+srv://Wholewheatbread:${process.env.MONGO_PASS}@test.d0autlk.mongodb.net/meetups?retryWrites=true&w=majority`
+  );
+
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups");
+
+  const loadedMeetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
+
+  client.close();
+
   return {
     fallback: false,
-    paths: [
-      {
-        params: {
-          meetupId: "m1",
-        },
+    paths: loadedMeetups.map((meetup) => ({
+      params: {
+        meetupId: meetup._id.toString(),
       },
-      {
-        params: {
-          meetupId: "m2",
-        },
-      },
-    ],
+    })),
   };
 }
 
 export async function getStaticProps(context) {
   const { meetupId } = context.params;
-  console.log(meetupId);
+
+  const client = await MongoClient.connect(
+    `mongodb+srv://Wholewheatbread:${process.env.MONGO_PASS}@test.d0autlk.mongodb.net/meetups?retryWrites=true&w=majority`
+  );
+
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups");
+
+  const ObjectId = require("mongodb").ObjectId;
+  const loadedMeetup = await meetupsCollection.findOne({
+    _id: new ObjectId(meetupId),
+  });
+
+  client.close();
 
   return {
     props: {
       meetupData: {
-        image:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/K%C3%B6lner_Dom_nachts_2013.jpg/1920px-K%C3%B6lner_Dom_nachts_2013.jpg",
-        title: "A meetup",
-        address: "Test street, 1234, New Zealand",
-        description: "A meetup description",
+        image: loadedMeetup.image,
+        title: loadedMeetup.title,
+        address: loadedMeetup.address,
+        description: loadedMeetup.description,
       },
     },
   };
