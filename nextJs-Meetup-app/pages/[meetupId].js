@@ -1,15 +1,25 @@
 import React from "react";
+import Head from "next/head";
 import { MongoClient } from "mongodb";
 import { MeetupDetail } from "../components/meetups/MeetupDetail";
 
 export default function MeetUpDetails({ meetupData }) {
   return (
-    <MeetupDetail
-      image={meetupData.image}
-      title={meetupData.title}
-      address={meetupData.address}
-      description={meetupData.description}
-    />
+    <>
+      <Head>
+        <title>{meetupData.title}</title>
+        <meta
+          name="description"
+          content={meetupData.description}
+        />
+      </Head>
+      <MeetupDetail
+        image={meetupData.image}
+        title={meetupData.title}
+        address={meetupData.address}
+        description={meetupData.description}
+      />
+    </>
   );
 }
 
